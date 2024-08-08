@@ -141,7 +141,3 @@ Lihat demo dan dokumentasi template yang digunakan :
 ## Auth
 
 Lihat dokumentasi auth : [myAuth](https://github.com/lonnieezell/myth-auth)
-
-```
-
-```
