@@ -44,12 +44,36 @@ Langkah-langkah untuk menginstal proyek Anda.
 Lakukan konfigurasi file .env. Atur konfigirasi database dan konfigurasi environment.
 
 - **Database**: Pastikan Anda telah mengatur koneksi database di file `.env`:
+
   ```
   database.default.hostname = localhost
   database.default.database = yourdatabase
   database.default.username = yourusername
   database.default.password = yourpassword
   database.default.DBDriver = MySQLi
+  ```
+
+  Lakukan konfigurasi file AuthController.
+
+- **AuthController**: Pastikan Anda telah mengubah konfgurasi redirect login dan logout pada file `AuthController`:
+
+  ```php
+    public function login()
+  {
+  $redirectURL = session('redirect_url') ?? site_url('/dashboard');
+  unset($_SESSION['redirect_url']);
+  $redirectURL = session('redirect_url') ?? site_url('/dashboard');
+  }
+
+   public function attemptLogin()
+  {
+   $redirectURL = session('redirect_url') ?? site_url('/dashbaord');
+  }
+
+  public function logout()
+  {
+    return redirect()->to(site_url('/login'));
+  }
   ```
 
 ## Seeding the Database
