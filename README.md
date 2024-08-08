@@ -1,68 +1,91 @@
-# CodeIgniter 4 Application Starter
+# Master Aplikasi CodeIgniter 4
 
-## What is CodeIgniter?
+Repositori ini adalah setup master aplikasi untuk kebutuhan pembuatan aplikasi di Fakultas Kedokteran, Kesehatan Masyarakat, dan Keperawatan Universitas Gadjah Mada.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Daftar Isi
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Seeding the Database](#seeding-the-database)
+- [Routes](#routes)
+- [Templates](#templates)
+- [Auth](#auth)
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Installation
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+Langkah-langkah untuk menginstal proyek Anda.
 
-## Installation & updates
+1. Clone repositori ini:
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+   ```sh
+   git clone https://github.com/sidikpriyo/ci4-tck-master.git
+   cd project
+   ```
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+2. Install dependencies dengan Composer:
 
-## Setup
+   ```sh
+   composer install
+   ```
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+3. Salin `.env.example` ke `.env` dan sesuaikan pengaturannya:
 
-## Important Change with index.php
+   ```sh
+   cp .env.example .env
+   ```
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+4. Buat kunci enkripsi aplikasi:
+   ```sh
+   php spark key:generate
+   ```
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+## Configuration
 
-**Please** read the user guide for a better explanation of how CI4 works!
+Lakukan konfigurasi file .env. Atur konfigirasi database dan konfigurasi environment.
 
-## Repository Management
+- **Database**: Pastikan Anda telah mengatur koneksi database di file `.env`:
+  ```
+  database.default.hostname = localhost
+  database.default.database = yourdatabase
+  database.default.username = yourusername
+  database.default.password = yourpassword
+  database.default.DBDriver = MySQLi
+  ```
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+## Seeding the Database
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+Langkah-langkah untuk menjalankan seeder dan mengisi database dengan data awal:
 
-## Server Requirements
+1. Melakukan migrasi database:
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+   ```sh
+   php spark migrate --all
+   ```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+2. Jalankan Database Seeder:
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+   ```sh
+   php spark db:seed DatabaseSeeder
+   ```
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+3. Jalankan aplikasi:
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+   ```sh
+   php spark serve
+   ```
+
+4. Opsional: menjalankan aplikasi menggunakan ip:
+   ```sh
+   php spark serve --host *your_ip_address* --port 8000
+   ```
+
+## Routes
+
+Daftar semua rute yang tersedia di aplikasi Anda.
+
+```php
+$routes->get('/dashboard', 'Home::index');
+$routes->resource('auth-groups', ['controller' => 'AuthGroupController']);
+$routes->resource('auth-permissions', ['controller' => 'AuthPermissionController']);
+$routes->resource('users', ['controller' => 'UserController']);
+```
